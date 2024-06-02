@@ -1,0 +1,75 @@
+.keyboardViewer {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.keyboardWrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-origin: center center;
+  transition: transform .2s;
+}
+
+.item {
+  position: absolute;
+  --item-background: gray;
+  width: var(--item-size);
+  height: var(--item-size);
+  --item-background: rgb(22, 22, 22);
+}
+
+.item.selected {
+  --item-background: green;
+}
+.itemBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: var(--item-background, rgb(22, 22, 22));
+  width: 100%;
+  height: 100%;
+}
+.itemBackground::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  border: var(--item-size) solid var(--item-background, gray);
+  border-top: none;
+  border-right: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-width: calc(var(--item-size) * 0.17364);
+  top: calc(0px - var(--item-size) * 0.17364 + 1px);
+  left: 0;
+}
+.itemBackground::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  border: var(--item-size) solid var(--item-background, gray);
+  border-bottom: none;
+  border-right: 0;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-width: calc(var(--item-size) * 0.17364);
+  bottom: calc(0px - var(--item-size) * 0.17365 + 1px);
+  left: 0;
+}
+.itemContent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: calc(var(--item-size) * 0.7);
+}
