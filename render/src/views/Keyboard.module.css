@@ -3,6 +3,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  perspective: 1000px;
 }
 .keyboardWrapper {
   position: absolute;
@@ -11,7 +12,8 @@
   width: 0;
   height: 0;
   transform-origin: center center;
-  transition: transform .2s;
+  transition: transform .4s;
+  perspective: 1000px;
 }
 
 .item {
@@ -20,10 +22,14 @@
   width: var(--item-size);
   height: var(--item-size);
   --item-background: rgb(22, 22, 22);
+  transition: transform .3s, opacity .3s;
 }
 
 .item.selected {
   --item-background: green;
+}
+.item.deactivated {
+  opacity: 0.2;
 }
 .itemBackground {
   position: absolute;
@@ -34,6 +40,8 @@
   background: var(--item-background, rgb(22, 22, 22));
   width: 100%;
   height: 100%;
+  transform-origin: left top;
+  transition: background .2s;
 }
 .itemBackground::before {
   content: " ";
@@ -44,9 +52,11 @@
   border-right: 0;
   border-left-color: transparent;
   border-right-color: transparent;
-  border-bottom-width: calc(var(--item-size) * 0.17364);
-  top: calc(0px - var(--item-size) * 0.17364 + 1px);
+  border-bottom-width: calc(var(--item-size) * sin(10deg));
+  top: calc(0px - var(--item-size) * sin(10deg) + 0.5px);
   left: 0;
+  right: 0;
+  transition: background .2s;
 }
 .itemBackground::after {
   content: " ";
@@ -57,9 +67,11 @@
   border-right: 0;
   border-left-color: transparent;
   border-right-color: transparent;
-  border-top-width: calc(var(--item-size) * 0.17364);
-  bottom: calc(0px - var(--item-size) * 0.17365 + 1px);
+  border-top-width: calc(var(--item-size) * sin(10deg));
+  bottom: calc(0px - var(--item-size) * sin(10deg) + 0.5px);
   left: 0;
+  right: 0;
+  transition: background .2s;
 }
 .itemContent {
   width: 100%;

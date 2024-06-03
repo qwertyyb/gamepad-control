@@ -1,10 +1,11 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('robotjs', {
-  moveMouse(delta) {
-    ipcRenderer.invoke('moveMouse', delta)
+contextBridge.exposeInMainWorld('GamepadControllerJSBridge', {
+  openApp(app) {
+    ipcRenderer.invoke('moveMouse', app)
   },
-  mouseClick(button, double) {
-    ipcRenderer.invoke('mouseClick', button, double)
+  keydown(key) {
+    console.log('keydown', key)
+    ipcRenderer.invoke('keydown', key)
   }
 })
