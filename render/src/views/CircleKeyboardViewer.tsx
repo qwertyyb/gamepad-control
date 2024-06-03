@@ -1,5 +1,6 @@
 import { Component, createMemo, createSignal, Index, onCleanup, onMount } from "solid-js";
 import styles from './Keyboard.module.css'
+import { GamepadButtonEvent } from "../utils/gamepad";
 
 const deg = 20
 const minRadius = 60
@@ -28,7 +29,7 @@ export const CircleKeyboardViewer: Component = () => {
     { key: 'M' }, { key: 'N' }, { key: 'O' }, { key: 'P' }, { key: 'Q' }, { key: 'R' },
     { key: 'S' }, { key: 'T' }, { key: 'U' }, { key: 'V' }, { key: 'W' }, { key: 'X' },
     { key: 'Y' }, { key: 'Z' },
-    { label: 0, key: 'NUMPAD_0' }, { label: 1, key: 'NUMPAD_1' }, { label: 2, key: 'NUMPAD_2' }, { label: 3, key: 'NUMPAD_3' },
+    { label: '0', key: 'NUMPAD_0' }, { label: 1, key: 'NUMPAD_1' }, { label: 2, key: 'NUMPAD_2' }, { label: 3, key: 'NUMPAD_3' },
     { label: 4, key: 'NUMPAD_4' }, { label: 5, key: 'NUMPAD_5' }, { label: 6, key: 'NUMPAD_6' }, { label: 7, key: 'NUMPAD_7' },
     { label: 8, key: 'NUMPAD_8' }, { label: 9, key: 'NUMPAD_9' },
     { label: '🔙', key: 'BACKSPACE' }, { label: '✔️', key: 'ENTER' }, { label: '␛', key: 'ESCAPE' }, { label: '␠', key: 'SPACE' },
@@ -41,8 +42,8 @@ export const CircleKeyboardViewer: Component = () => {
     if (!gamepad) throw new Error(`Gamepad ${index} doesn\'t exist`)
     
     const [lx, ly, rx, ry] = gamepad.axes;
-    if (Math.abs(rx) > 0.5 || Math.abs(ry) > 0.5) {
-      const target = Math.floor((Math.round(Math.atan2(ry, rx) / Math.PI * 180) + 360  + deg / 2) % 360 / deg) + curCircle() * count
+    if (Math.abs(lx) > 0.5 || Math.abs(ly) > 0.5) {
+      const target = Math.floor((Math.round(Math.atan2(ly, lx) / Math.PI * 180) + 360  + deg / 2) % 360 / deg) + curCircle() * count
       setSelectedIndex(target)
     }
 
@@ -60,18 +61,31 @@ export const CircleKeyboardViewer: Component = () => {
     checkState(event.gamepad.index)
   }
 
-  const onGamepadButtonDown = () => {
-    toggleCircle()
+  const onGamepadButtonDown = (event: GamepadButtonEvent) => {
+    if (event.detail.button === 'ZL') {
+      toggleCircle()
+    } else if (event.detail.button === 'A') {
+      onItemTap(selectedIndex())
+    } else if (event.detail.button === 'B') {
+      window.GamepadControllerJSBridge?.keydown('BACKSPACE')
+    }
+  }
+
+
+  const onItemTap = (index: number) => {
+    setSelectedIndex(index)
+    const item = list()[selectedIndex()]
+    window.GamepadControllerJSBridge?.keydown(item.key)
   }
 
   onMount(() => {
     window.addEventListener('gamepadconnected', onGamepadConnected)
-    window.addEventListener('gamepadbuttondown', onGamepadButtonDown)
+    window.addEventListener('gamepadbuttondown', onGamepadButtonDown as (event: Event) => void)
   })
 
   onCleanup(() => {
     window.removeEventListener('gamepadconnected', onGamepadConnected)
-    window.removeEventListener('gamepadbuttondown', onGamepadButtonDown)
+    window.removeEventListener('gamepadbuttondown', onGamepadButtonDown as (event: Event) => void)
     animationFrameId && cancelAnimationFrame(animationFrameId)
   })
 

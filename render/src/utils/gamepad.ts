@@ -9,6 +9,34 @@ export enum AxesDirection {
   LeftBottom = 3,
 }
 
+const nsProProfile = {
+  btns: {
+    0: 'B',
+    1: 'A',
+    2: 'Y',
+    3: 'X',
+
+    4: 'L',
+    5: 'R',
+    6: 'ZL',
+    7: 'ZR',
+
+    8: 'Mins',
+    9: 'Plus',
+
+    10: 'LeftStick',
+    11: 'RightStick',
+
+    12: 'Up',
+    13: 'Down',
+    14: 'Left',
+    15: 'Right',
+
+    16: 'Home',
+    17: 'Screenshot',
+  } as Record<string, string>
+}
+
 let prevBtns: Record<string, boolean> | null = null
 let prevAxes: { l: AxesDirection, r: AxesDirection } | null = null
 const checkState = (index: number) => {
@@ -30,7 +58,7 @@ const checkState = (index: number) => {
       return acc
     }, [] as string[])
     diff.forEach(key => {
-      window.dispatchEvent(new CustomEvent(btns[key] ? 'gamepadbuttondown' : 'gamepadbuttonup', { detail: { button: key } }))
+      window.dispatchEvent(new CustomEvent(btns[key] ? 'gamepadbuttondown' : 'gamepadbuttonup', { detail: { button: nsProProfile.btns[key] || key } }))
     })
   }
 

@@ -27,6 +27,7 @@ export const Home: Component = () => {
 
   const axesHandler = (event: GamepadAxesChangeEvent) => {
     const { type, value } = event.detail
+    console.log(type, value)
     if (type === 'right') return
     if (value === AxesDirection.Left) {
       setSelectedIndex((selectedIndex() - 1 + list().length) % list().length)
@@ -48,6 +49,11 @@ export const Home: Component = () => {
   const onGamepadButtonDown = (event: GamepadButtonEvent) => {
     if (event.detail.button === 'A') {
       onItemTap(selectedIndex())
+    } else if (event.detail.button === 'Left') {
+      setSelectedIndex((selectedIndex() - 1 + list().length) % list().length)
+    } else if (event.detail.button === 'Right') {
+      setSelectedIndex((selectedIndex() + 1) % list().length)
+      
     }
   }
 
