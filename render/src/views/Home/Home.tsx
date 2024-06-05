@@ -24,6 +24,7 @@ export const Home: Component = () => {
     { image: mgtv, title: '芒果TV', url: 'https://mgtv.com' },
     { image: mirror, title: '投屏' },
   ])
+  let appListEl: HTMLUListElement | null = null;
 
   const axesHandler = (event: GamepadAxesChangeEvent) => {
     const { type, value } = event.detail
@@ -43,6 +44,12 @@ export const Home: Component = () => {
       setSelectedIndex((selectedIndex() + 1) % list().length)
     } else if (event.key === 'Enter') {
       onItemTap(selectedIndex())
+    } else if (event.key === 'ArrowUp') {
+      const columns = window.getComputedStyle(appListEl!).getPropertyValue('grid-template-columns').split(' ').length
+      setSelectedIndex(Math.max(0, selectedIndex() - columns))
+    } else if (event.key === 'ArrowDown') {
+      const columns = window.getComputedStyle(appListEl!).getPropertyValue('grid-template-columns').split(' ').length
+      setSelectedIndex(Math.min(list().length - 1, selectedIndex() + columns))
     }
   }
 
@@ -53,7 +60,6 @@ export const Home: Component = () => {
       setSelectedIndex((selectedIndex() - 1 + list().length) % list().length)
     } else if (event.detail.button === 'Right') {
       setSelectedIndex((selectedIndex() + 1) % list().length)
-      
     }
   }
 
@@ -78,15 +84,17 @@ export const Home: Component = () => {
 
   return (
     <div class={styles.home}>
-      <ul class={styles.appList}>
+      <ul class={styles.appList} ref={appListEl!}>
         <Index each={list()}>
           {(item, index) => (
               <li
                 onClick={() => onItemTap(index)}
                 class={styles.appItem}
                 classList={{ [styles.selected]: index === selectedIndex() }}>
-                <img class={styles.cover} src={item().image} />
-                <h3 class={styles.title}>{item().title}</h3>
+                  <a href="javascript:void(0)">
+                    <img class={styles.cover} src={item().image} />
+                    <h3 class={styles.title}>{item().title}</h3>
+                  </a>
               </li>
           )}
         </Index>

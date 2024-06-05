@@ -7,6 +7,7 @@ export enum AxesDirection {
   RightBottom = 1,
   Bottom = 2,
   LeftBottom = 3,
+  None = -10
 }
 
 const nsProProfile = {
@@ -39,6 +40,7 @@ const nsProProfile = {
 
 let prevBtns: Record<string, boolean> | null = null
 let prevAxes: { l: AxesDirection, r: AxesDirection } | null = null
+const deadzone = 0.4
 const checkState = (index: number) => {
   const gamepad = navigator.getGamepads()[index]
   if (!gamepad) throw new Error(`Gamepad ${index} doesn\'t exist`)
@@ -65,17 +67,17 @@ const checkState = (index: number) => {
   // 判断方向有没有变化，支持八个方向 8 个方向为，-3 ~ 4
   const [lh, lv, rh, rv] = gamepad.axes
   const step = Math.PI / 180 * 45
-  let ldirection = Math.floor((Math.atan2(lv, lh) + step / 2) / step)
+  let ldirection = (Math.abs(lh) > deadzone || Math.abs(lv) > deadzone) ? Math.floor((Math.atan2(lv, lh) + step / 2) / step) : AxesDirection.None
   ldirection = ldirection === -4 ? 4 : ldirection
-  let rdirection = Math.floor((Math.atan2(lv, lh) + step / 2) / step)
+  let rdirection = (Math.abs(rh) > deadzone || Math.abs(rv) > deadzone) ? Math.floor((Math.atan2(lv, lh) + step / 2) / step) : AxesDirection.None
   rdirection = rdirection === -4 ? 4 : rdirection
   const axes = { l: ldirection, r: rdirection }
 
   if (prevAxes) {
-    if (prevAxes.l !== axes.l) {
+    if (axes.l !== AxesDirection.None && prevAxes.l !== axes.l) {
       window.dispatchEvent(new CustomEvent('gamepadaxeschange', { detail: { type: 'left', value: axes.l } }))
     }
-    if (prevAxes.r !== axes.r) {
+    if (axes.r !== AxesDirection.None && prevAxes.r !== axes.r) {
       window.dispatchEvent(new CustomEvent('gamepadaxeschange', { detail: { type: 'right', value: axes.r } }))
     }
   }

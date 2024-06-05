@@ -53,7 +53,7 @@
   border-left-color: transparent;
   border-right-color: transparent;
   border-bottom-width: calc(var(--item-size) * sin(10deg));
-  top: calc(0px - var(--item-size) * sin(10deg) + 0.5px);
+  bottom: var(--item-size);
   left: 0;
   right: 0;
   transition: background .2s;
@@ -68,7 +68,7 @@
   border-left-color: transparent;
   border-right-color: transparent;
   border-top-width: calc(var(--item-size) * sin(10deg));
-  bottom: calc(0px - var(--item-size) * sin(10deg) + 0.5px);
+  top: var(--item-size);
   left: 0;
   right: 0;
   transition: background .2s;

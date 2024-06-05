@@ -2,9 +2,24 @@ import { Component, createSignal, Index, onCleanup, onMount } from "solid-js";
 import styles from './Keyboard.module.css'
 import { GamepadButtonEvent } from "../utils/gamepad";
 
-const deg = 20
+const deg = 30
 const minRadius = 60
-const step = 4
+const step = 0
+const count = 360 / deg
+
+
+const calcNextRadius = (base: number = minRadius) => {
+  const size = 2 * Math.sin(deg / 2 * Math.PI / 180) * base;
+  return base + size + step
+}
+
+const calcRadiusByCount = (index: number = 0, base: number = minRadius) => {
+  let result = minRadius;
+  for(let i = 0; i < index; i += 1) {
+    result = calcNextRadius(result)
+  }
+  return result
+}
 
 interface KeyItem {
   key: string
@@ -12,7 +27,7 @@ interface KeyItem {
 }
 
 export const KeyboardViewer: Component = () => {
-  const [selectedIndex, setSelectedIndex] = createSignal(30);
+  const [selectedIndex, setSelectedIndex] = createSignal(1);
   const [list] = createSignal([
     { key: 'A' }, { key: 'B' }, { key: 'C' }, { key: 'D' }, { key: 'E' }, { key: 'F' },
     { key: 'G' }, { key: 'H' }, { key: 'I' }, { key: 'J' }, { key: 'K' }, { key: 'L' },
@@ -101,32 +116,36 @@ export const KeyboardViewer: Component = () => {
       {selectedIndex()}
       <div class={styles.keyboardWrapper}
         style={{
-          transform: `scale(${0.6 - (selectedIndex() - 40) / list().length / 0.3})`,
+          transform: `scale(${1.4 - (selectedIndex() - 40) / list().length / 0.5})`,
         }}
       >
         <Index each={list()}>
-          {(item, index) => (
+          {(item, index) => {
+            const circleIndex = Math.floor((index) / count)
+            const radius = calcRadiusByCount(circleIndex)
+            const size = 2 * Math.sin(deg / 2 * Math.PI / 180) * radius * 0.9;
+            return (
             <div
               onClick={() => onItemTap(index)}
               class={styles.item}
               classList={{ [styles.selected]: index === selectedIndex() }}
               style={{
-                '--item-size': 2 * Math.PI * (minRadius + step * index) / deg * 0.9 + "px",
-                'transform': `translateZ(${deg * index * 0.1}px)`,
+                '--item-size': 2 * Math.PI * (minRadius + step * index) / (360 / deg) * 0.8 + "px",
+                'transform': `translateZ(${deg * index - selectedIndex() * 20}px)`,
                 left:
                   Math.cos((deg * index - 0.5 * deg) * Math.PI / 180) *
-                    (minRadius + step * index) + 
+                    (minRadius) + 
                   "px",
                 top:
                   Math.sin((deg * index - 0.5 * deg) * Math.PI / 180) *
-                    (minRadius + step * index) +
+                    (minRadius) +
                   "px",
-                opacity: 1 - Math.abs(selectedIndex() - index) / Math.min(20, list().length),
+                opacity: 1 - Math.abs(selectedIndex() - index) / Math.min(12, list().length),
               }}
             >
               <div class={styles.itemBackground}
                 style={{
-                  transform: `rotate(${20 * index}deg)`
+                  transform: `rotate(${deg * index}deg)`
                 }}
               >
                 <div class={styles.itemContent} style={{ transform: `rotate(${-deg * index}deg)` }}>
@@ -134,7 +153,8 @@ export const KeyboardViewer: Component = () => {
                 </div>
               </div>
             </div>
-          )}
+          )
+          }}
         </Index>
       </div>
       </div>
