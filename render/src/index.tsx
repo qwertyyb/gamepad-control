@@ -7,6 +7,7 @@ import { KeyboardViewer } from './views/KeyboardViewer';
 import { CircleKeyboardViewer } from './views/CircleKeyboardViewer';
 import { Home } from './views/Home/Home';
 import './utils/gamepad';
+import { VirtualKeyboard } from './views/VirtualKeyboard';
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ render(
     <Router>
       <Route path="/keyboard/circle" component={CircleKeyboardViewer} />
       <Route path="/keyboard/advance" component={KeyboardViewer} />
+      <Route path="/keyboard/virtual" component={VirtualKeyboard} />
       <Route path="/" component={Home} />
     </Router>
   ),

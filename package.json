@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@kmamal/sdl": "^0.10.7",
-    "canvas": "^2.11.2",
+    "puppeteer-core": "^22.10.0",
     "suchibot": "^1.9.0"
   }
 }

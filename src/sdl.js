@@ -1,5 +1,5 @@
 const sdl = require('@kmamal/sdl')
-const bot = require('../../suchibot');
+const bot = require('suchibot');
 const EventEmitter = require('events')
 
 const eventBus = new EventEmitter()

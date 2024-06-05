@@ -1,0 +1,101 @@
+.box1 {
+  background-color: #f1f1f7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.keyboard {
+  user-select: none;
+  cursor: pointer;
+}
+
+.keys {
+  display: flex;
+  list-style: none;
+  margin: 0 0;
+}
+
+li {
+  box-shadow: 0 -6px 10px rgb(255, 255, 255), 0 4px 15px rgba(0, 0, 0, 0.3);
+  width: 3em;
+  font-size: 2em;
+  margin: 0.2em;
+  background-color: #f2f2f2;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 3em;
+  transition: all 0.25s;
+}
+
+li:active {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  color: rgb(12, 164, 190);
+  text-shadow: 0 0 15px #57c1f1;
+}
+
+.one {
+  color: #eb3f33;
+}
+
+.one li {
+  width: 3.12em;
+}
+
+.two {
+  color: #df960e;
+}
+
+.three {
+  color: #2b46df;
+}
+
+.four {
+  color: rgb(57, 194, 75);
+}
+
+.five {
+  color: #8919ca;
+}
+
+.six {
+  color: #e73d09;
+}
+
+.esc {
+  width: 3.5em;
+}
+
+.back {
+  width: 4.7em;
+}
+
+.tab {
+  width: 4.7em;
+}
+
+.caps {
+  width: 6.3em;
+}
+
+.enter {
+  width: 4.7em;
+}
+
+.shift {
+  width: 7.2em;
+}
+
+.ctrl,
+.win,
+.alt,
+.fn,
+.menu {
+  width: 4em;
+}
+
+.space {
+  width: 22.3em;
+}
