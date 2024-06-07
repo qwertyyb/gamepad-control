@@ -38,8 +38,12 @@ const nsProProfile = {
   } as Record<string, string>
 }
 
-let prevBtns: Record<string, boolean> | null = null
-let prevAxes: { l: AxesDirection, r: AxesDirection } | null = null
+const getDirectionFromValue = (value: AxesDirection) => {
+  return Object.keys(AxesDirection).find(key => (AxesDirection as any)[key] === value)
+}
+
+let prevBtns: Record<string, boolean> = Object.keys(nsProProfile.btns).reduce((acc, index) => ({ ...acc, [index]: false }), {})
+let prevAxes: { l: AxesDirection, r: AxesDirection } = { l: AxesDirection.None, r: AxesDirection.None }
 const deadzone = 0.4
 const checkState = (index: number) => {
   const gamepad = navigator.getGamepads()[index]
@@ -75,10 +79,20 @@ const checkState = (index: number) => {
 
   if (prevAxes) {
     if (axes.l !== AxesDirection.None && prevAxes.l !== axes.l) {
-      window.dispatchEvent(new CustomEvent('gamepadaxeschange', { detail: { type: 'left', value: axes.l } }))
+      window.dispatchEvent(
+        new CustomEvent(
+          axes.l === AxesDirection.None ? 'gamepadbuttonup' : 'gamepadbuttondown',
+          { detail: { button: 'LeftAxes' + getDirectionFromValue(axes.l) } }
+        )
+      )
     }
-    if (axes.r !== AxesDirection.None && prevAxes.r !== axes.r) {
-      window.dispatchEvent(new CustomEvent('gamepadaxeschange', { detail: { type: 'right', value: axes.r } }))
+    if (prevAxes.r !== axes.r) {
+      window.dispatchEvent(
+        new CustomEvent(
+          axes.r === AxesDirection.None ? 'gamepadbuttonup' : 'gamepadbuttondown',
+          { detail: { button: 'LeftAxes' + getDirectionFromValue(axes.r) } }
+        )
+      )
     }
   }
 

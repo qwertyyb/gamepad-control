@@ -1,15 +1,16 @@
 .box1 {
-  background-color: #f1f1f7;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  --var-width: calc(100vw - 40px);
 }
 
 .keyboard {
   user-select: none;
   cursor: pointer;
+  width: var(--var-width);
 }
 
 .keys {
@@ -18,22 +19,29 @@
   margin: 0 0;
 }
 
-li {
+.keyboardItem {
   box-shadow: 0 -6px 10px rgb(255, 255, 255), 0 4px 15px rgba(0, 0, 0, 0.3);
   width: 3em;
+  width: calc(var(--var-width) * 0.0598);
   font-size: 2em;
-  margin: 0.2em;
+  font-size: min(2em, calc(var(--var-width) * 0.0598 / 3));
+  margin: calc(var(--var-width) * 0.0598 / 3 * 0.2);
   background-color: #f2f2f2;
-  border-radius: 15px;
+  border-radius: calc(var(--var-width) * 0.0093458);
   text-align: center;
   line-height: 3em;
+  line-height: calc(var(--var-width) * 0.0598);
   transition: all 0.25s;
+  border: 1px solid transparent;
 }
 
-li:active {
+.keyboardItem.active, .keyboardItem:active {
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
   color: rgb(12, 164, 190);
-  text-shadow: 0 0 15px #57c1f1;
+  text-shadow: 0 0 calc(var(--var-width) * 0.0093458) #57c1f1;
+}
+.keyboardItem.selected {
+  border-color: #000;
 }
 
 .one {
@@ -42,6 +50,7 @@ li:active {
 
 .one li {
   width: 3.12em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 3.12);
 }
 
 .two {
@@ -64,28 +73,28 @@ li:active {
   color: #e73d09;
 }
 
-.esc {
-  width: 3.5em;
+.esc,.prc {
+  width: calc(var(--var-width) * 0.0598 / 3 * 3.8);
 }
 
 .back {
-  width: 4.7em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 4.7);
 }
 
 .tab {
-  width: 4.7em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 4.7);
 }
 
 .caps {
-  width: 6.3em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 6.3);
 }
 
 .enter {
-  width: 4.7em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 4.7);
 }
 
 .shift {
-  width: 7.2em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 7.3);
 }
 
 .ctrl,
@@ -93,9 +102,9 @@ li:active {
 .alt,
 .fn,
 .menu {
-  width: 4em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 4.1);
 }
 
 .space {
-  width: 22.3em;
+  width: calc(var(--var-width) * 0.0598 / 3 * 22.3);
 }

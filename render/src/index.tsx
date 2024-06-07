@@ -7,6 +7,7 @@ import { KeyboardViewer } from './views/KeyboardViewer';
 import { CircleKeyboardViewer } from './views/CircleKeyboardViewer';
 import { Home } from './views/Home/Home';
 import './utils/gamepad';
+import './utils/keyEvent';
 import { VirtualKeyboard } from './views/VirtualKeyboard';
 
 declare global {

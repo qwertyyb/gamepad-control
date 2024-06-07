@@ -1,6 +1,6 @@
 const path = require('path')
 const { app, BrowserWindow, ipcMain, screen } = require('electron')
-const robot = require('suchibot')
+const robot = require('../../suchibot')
 const { start, eventBus } = require('./sdl')
 const puppeteer = require('./puppeteer')
 
@@ -17,7 +17,7 @@ const createKeyboardWindow = () => {
     transparent: true,
     alwaysOnTop: true,
     hasShadow: false,
-    show: false,
+    // show: false,
     webPreferences: {
       preload: path.join(__dirname, './preload.js')
     }
